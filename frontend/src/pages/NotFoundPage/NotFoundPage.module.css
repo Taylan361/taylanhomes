@@ -1,0 +1,83 @@
+/* frontend/src/pages/NotFoundPage/NotFoundPage.module.css */
+
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Header ve Footer'ı dışarıda bırak */
+  padding: 40px 20px;
+  background-color: var(--color-off-white);
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 8rem; /* Büyük 404 yazısı */
+  font-weight: 900;
+  color: var(--color-primary-navy);
+  margin-bottom: 20px;
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-secondary-orange);
+  margin-bottom: 20px;
+}
+
+.message {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--color-dark-gray);
+  line-height: 1.6;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.homeButton {
+  background-color: var(--color-primary-navy);
+  color: var(--color-white);
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  text-decoration: none; /* Link gibi görünmemesi için */
+}
+
+.homeButton:hover {
+  background-color: var(--color-dark-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Düzenlemeler */
+@media (max-width: 768px) {
+  .title {
+    font-size: 6rem;
+  }
+  .subtitle {
+    font-size: 2rem;
+  }
+  .message {
+    font-size: 1rem;
+  }
+  .homeButton {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 4rem;
+  }
+  .subtitle {
+    font-size: 1.5rem;
+  }
+}

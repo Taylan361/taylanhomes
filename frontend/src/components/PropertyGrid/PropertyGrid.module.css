@@ -1,0 +1,76 @@
+/* frontend/src/components/PropertyGrid/PropertyGrid.module.css */
+
+.propertyGridSection {
+  padding: 50px 0;
+  background-color: var(--color-off-white); /* Hafif kirli beyaz arka plan */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-dark-navy);
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 80px;
+  height: 4px;
+  background-color: var(--color-accent-blue); /* Vurgu mavisi alt çizgi */
+  border-radius: 2px;
+}
+
+.grid {
+  display: grid;
+  /* Varsayılan grid, tek sütunlu kategori içeriği için veya genel küçük ekranlar için */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px; /* Kartlar arası boşluk */
+  justify-content: center; /* Ortalar */
+  align-items: stretch; /* Kartların eşit yüksekliğe sahip olmasını sağlar */
+}
+
+/* Çoklu sütun düzeni için (Ana Sayfa ve ForSalePage'deki ana grid için kullanılacak) */
+.multiColumnLayout .grid {
+  grid-template-columns: repeat(3, 1fr); /* 3 eşit sütun */
+  gap: 30px;
+}
+
+.noPropertiesMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--color-medium-gray);
+  padding: 50px 0;
+}
+
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  .grid {
+    grid-template-columns: 1fr; /* Mobil için her zaman tek sütun */
+    gap: 20px;
+  }
+  .container {
+    padding: 0 15px;
+  }
+  .multiColumnLayout .grid { /* Mobil çoklu sütun düzeni de tek sütun olur */
+    grid-template-columns: 1fr;
+  }
+}

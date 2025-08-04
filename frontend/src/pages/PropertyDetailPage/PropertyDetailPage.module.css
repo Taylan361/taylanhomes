@@ -1,0 +1,517 @@
+/* frontend/src/pages/PropertyDetailPage/PropertyDetailPage.module.css */
+
+:root {
+  /* Renk Paleti (Header ve diğer görsel referanslara göre güncellendi) */
+  --color-primary-navy: #1A2C42; /* Koyu Lacivert (Header arka planı, ana başlıklar) */
+  --color-dark-blue: #2A4058; /* Daha koyu mavi (Hover durumları, bazı arka planlar) */
+  --color-accent-blue: #3E8DCF; /* Genel vurgu mavisi (Fiyat, butonlar, alt çizgiler, ikonlar) - Header'daki gibi */
+  --color-accent-blue-darker: #357BBF; /* Vurgu mavisinin hover hali */
+  --color-white: #ffffff;
+  --color-off-white: #f8f9fa; /* Hafif kirli beyaz (Ana sayfa arka planı) */
+  --color-light-gray: #e9ecef; /* Açık gri (Özellik kutusu border/background, ayırıcı çizgiler) */
+  --color-medium-gray: #868e96; /* Konum metni için grimsi */
+  --color-dark-gray: #495057; /* Koyu gri (Paragraf metinleri, navigasyon linkleri) */
+  --color-black: #212529;
+  --color-red: #dc3545; /* Hata mesajları için kırmızı */
+
+  /* Fontlar */
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  /* Genel Boyutlar */
+  --header-height: 80px; /* Sabit header yüksekliği */
+  --footer-height: 200px; /* Tahmini footer yüksekliği */
+  --banner-height: 150px; /* Yeni banner yüksekliği */
+}
+
+/* Yeni: Sayfa başlığı banner'ı */
+.pageHeaderBanner {
+  background-color: var(--color-primary-navy); /* Koyu lacivert arka plan */
+  color: var(--color-white);
+  padding-top: 10px; /* Header yüksekliği kadar üstten boşluk ekle */
+  padding-bottom: 20px;
+  text-align: center;
+  position: relative; /* Z-index için */
+  z-index: 1; /* İçeriğin üzerinde olsun ama header'ın altında */
+  width: 100%; /* Tam genişlik */
+  box-sizing: border-box; /* Padding'in genişliği etkilememesini sağlar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--banner-height); /* Minimum yükseklik */
+}
+
+.bannerContent {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.propertyDetailPageContainer {
+  padding-top: 50px; /* Banner'dan sonraki içeriğin üst boşluğu */
+  padding-bottom: 50px;
+  background-color: var(--color-off-white); /* Genel sayfa arka planı */
+  min-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--banner-height));
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+.propertyTitle {
+  font-size: 2.8em;
+  color: var(--color-white); /* Banner içinde beyaz başlık */
+  margin-top: 0; 
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.breadcrumbs {
+  font-size: 0.9em;
+  color: var(--color-light-gray); /* Banner içinde açık gri ekmek kırıntıları */
+  margin-bottom: 0; 
+  text-align: center;
+}
+
+.breadcrumbs a {
+  color: var(--color-light-gray); /* Banner içinde açık gri link */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-white); /* Hover'da beyaz */
+}
+
+.breadcrumbs span {
+  font-weight: bold;
+  color: var(--color-white); /* Banner içinde beyaz vurgu */
+}
+
+.contentWrapper {
+  display: flex;
+  flex-wrap: wrap; /* Küçük ekranlarda alt alta geçsin */
+  gap: 30px; /* Sütunlar arası boşluk */
+  margin-bottom: 30px;
+  align-items: flex-start; /* Sütunları yukarı hizala */
+}
+
+.imageGallery {
+  position: relative; /* Butonlar ve resimler için kapsayıcı */
+  flex: 2; /* Görsel galerisi daha geniş olsun */
+  min-width: 300px; /* Minimum genişlik */
+  max-width: 900px; /* Maksimum genişlik belirle */
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden; /* Kenar yuvarlatmaları için */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: var(--color-white); /* Resim galerisi için beyaz arka plan */
+  box-sizing: border-box;
+  display: flex; /* İçindeki öğeleri düzenlemek için flex kullan */
+  flex-direction: column; /* Öğeleri dikey hizala */
+}
+
+.mainImage {
+  width: 100%;
+  height: 500px; /* Normal görünümde sabit bir yükseklik ver */
+  object-fit: cover; /* Görselin tamamını doldurmasını sağla, kırpılabilir */
+  display: block;
+  border-radius: 0; /* Köşeler kaldırıldı, kapsayıcıda zaten var */
+  transition: opacity 0.5s ease-in-out; /* Yumuşak geçiş efekti eklendi */
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+/* NORMAL GÖRÜNÜM VE LIGHTBOX İÇİN ORTAK NAVİGASYON BUTONLARI */
+.imageNavBelow {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.navButtonBelow {
+  background-color: var(--color-accent-blue);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1em;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.navButtonBelow:hover {
+  background-color: var(--color-accent-blue-darker);
+}
+
+.thumbnailContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 0; /* Yeni buton div'i ile boşluk sağlandı */
+  flex-wrap: wrap; /* Küçük ekranlarda alt alta geçsin */
+  padding-bottom: 15px; /* Alt boşluk eklendi */
+}
+
+.thumbnail {
+  width: 100px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.thumbnail:hover {
+  border-color: var(--color-accent-blue); /* Vurgu mavisi */
+  transform: translateY(-3px);
+}
+
+.thumbnail.active {
+  border-color: var(--color-primary-navy);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-navy-rgb), 0.3);
+}
+
+.detailsSection {
+  flex: 1; /* Sağ sütun daha az yer kaplasın */
+  min-width: 300px; /* Minimum genişlik */
+  background-color: var(--color-white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  display: flex; /* İçindeki öğeleri düzenlemek için flex kullan */
+  flex-direction: column; /* Öğeleri dikey hizala */
+  gap: 20px; /* Bölümler arası boşluk */
+}
+
+.detailTitle {
+  font-size: 2.2em;
+  color: var(--color-primary-navy);
+  margin-bottom: 5px; /* Başlık ve konum arası boşluk azaltıldı */
+  font-weight: 600;
+}
+
+.detailLocation {
+  font-size: 1.1em;
+  color: var(--color-medium-gray); /* Görseldeki gibi grimsi */
+  margin-bottom: 15px; /* Konum ve fiyat arası boşluk azaltıldı */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detailLocation svg {
+  color: var(--color-accent-blue); /* Vurgu mavisi */
+}
+
+.detailPrice {
+  font-family: var(--font-heading);
+  font-size: 40px; /* Boyut 1.5rem olarak güncellendi */
+  font-weight: 700;
+  color: var(--color-accent-blue);
+  margin-bottom: 15px; /* Alt boşluk 15px olarak güncellendi */
+  
+  /* Fiyatın tek satırda kalması ve taşma durumunda düzenlenmesi için eklendi */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.soldStatusBadge {
+  background-color: var(--color-red);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Daha küçük kutular */
+  gap: 15px; /* Daha az boşluk */
+  margin-bottom: 25px; /* Açıklama öncesi boşluk */
+}
+
+.featureItem {
+  background-color: var(--color-white); /* Görseldeki gibi beyaz */
+  border: 1px solid var(--color-light-gray); /* Hafif gri border */
+  padding: 12px 15px; /* Daha az padding */
+  border-radius: 8px;
+  display: flex;
+  align-items: center; /* İçeriği yatayda hizala */
+  gap: 8px; /* Metin ve ikon arası boşluk */
+  font-size: 0.95em; /* Daha küçük font */
+  color: var(--color-dark-gray);
+  font-weight: 500;
+  text-align: left; /* Metni sola hizala */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); /* Hafif gölge */
+}
+
+.featureItem svg {
+  color: var(--color-primary-navy); /* Koyu lacivert ikon */
+  font-size: 1.2em; /* İkonları büyüttük */
+}
+
+.sectionHeading {
+  font-size: 1.8em;
+  color: var(--color-primary-navy);
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--color-accent-blue); /* Vurgu mavisi */
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.descriptionSection {
+  padding-top: 15px; /* Üstten boşluk ekle */
+  border-top: 1px solid var(--color-light-gray); /* Üstüne daha açık gri çizgi */
+  margin-top: 15px; /* Çizgi ile üst bölüm arasına boşluk */
+}
+
+.descriptionText {
+  font-size: 1em;
+  color: var(--color-dark-gray);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.contactSection {
+  padding-top: 15px; /* Üstten boşluk ekle */
+  border-top: 1px solid var(--color-light-gray); /* Üstüne daha açık gri çizgi */
+  margin-top: 15px; /* Çizgi ile üst bölüm arasına boşluk */
+}
+
+.contactSection p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: var(--color-dark-gray);
+}
+
+.contactSection svg {
+  color: var(--color-primary-navy);
+  font-size: 1.1em;
+}
+
+.contactButton {
+  display: inline-block;
+  background-color: var(--color-accent-blue); /* Vurgu mavisi */
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contactButton:hover {
+  background-color: var(--color-accent-blue-darker); /* Vurgu mavisinin hover hali */
+  transform: translateY(-2px);
+}
+
+.mapSection {
+  margin-top: 30px;
+  background-color: var(--color-white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.mapContainer {
+  height: 400px; /* Harita yüksekliği */
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden; /* Haritanın köşeleri yuvarlak olsun */
+  margin-top: 15px;
+}
+
+.noMapDataMessage {
+  font-size: 1.1em;
+  color: var(--color-dark-gray);
+  text-align: center;
+  padding: 20px;
+  background-color: var(--color-light-gray);
+  border-radius: 8px;
+}
+
+/* LIGHTBOX MODALI */
+.lightboxOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.lightboxContent {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightboxImage {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh; /* Yüksekliği ekran yüksekliğinin %80'i ile sınırla */
+  object-fit: contain; /* Resmin tamamı görünür */
+  margin-bottom: 15px;
+}
+
+.lightboxCloseButton {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 2.5em;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2001;
+  transition: color 0.3s ease;
+}
+
+.lightboxCloseButton:hover {
+  color: var(--color-accent-blue);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .pageHeaderBanner {
+    min-height: 120px; /* Tablet için banner yüksekliği */
+  }
+  .propertyDetailPageContainer {
+    padding-top: 30px; /* Tablette banner'dan sonraki boşluğu ayarla */
+  }
+  .propertyTitle {
+    font-size: 2.2em;
+  }
+  .mainImage {
+    height: 400px; /* Daha küçük ekranlarda yüksekliği azalt */
+    object-fit: cover;
+  }
+  .detailTitle {
+    font-size: 1.8em;
+  }
+  .detailPrice {
+    font-size: 2em; /* Tablette de büyük kalsın */
+  }
+  .contentWrapper {
+    flex-direction: column;
+  }
+  .imageGallery, .detailsSection {
+    max-width: 100%; /* Tam genişlik */
+    margin: 0 auto; /* Ortala */
+  }
+}
+
+/* YALNIZCA MASAÜSTÜ GÖRÜNÜMÜ İÇİN UZUN GÖRSEL DÜZELTMESİ */
+@media (min-width: 993px) {
+  .mainImage {
+    height: auto;
+    max-height: 500px;
+    object-fit: contain; /* Masaüstünde resmin tamamı gözüksün */
+  }
+}
+
+@media (max-width: 768px) {
+  .pageHeaderBanner {
+    min-height: 100px; /* Mobil için banner yüksekliği */
+  }
+  .propertyDetailPageContainer {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 20px; /* Mobilde banner'dan sonraki boşluğu ayarla */
+  }
+  .propertyTitle {
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  .breadcrumbs {
+    font-size: 0.8em;
+    margin-bottom: 0;
+  }
+  .mainImage {
+    height: 300px; /* Mobil cihazlarda daha da küçült */
+    object-fit: contain; /* Mobilde de resmin tamamı gözüksün */
+  }
+  .imageNavBelow {
+    margin: 10px 0;
+  }
+  .navButtonBelow {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+  .thumbnailContainer {
+    gap: 8px;
+    margin-top: 15px;
+  }
+  .thumbnail {
+    width: 80px;
+    height: 60px;
+  }
+  .detailsSection {
+    padding: 20px;
+  }
+  .detailTitle {
+    font-size: 1.5em;
+  }
+  .detailPrice {
+    font-size: 1.8em; /* Mobil için de büyük kalsın */
+  }
+  .featuresGrid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Mobil için daha küçük kutular */
+    gap: 10px;
+  }
+  .featureItem {
+    font-size: 0.85em;
+    padding: 10px;
+  }
+  .featureItem svg {
+    font-size: 1.3em;
+  }
+  .sectionHeading {
+    font-size: 1.5em;
+  }
+  .descriptionSection, .contactSection {
+    padding-top: 10px; /* Daha az boşluk */
+    margin-top: 10px; /* Daha az boşluk */
+  }
+}
+
+@media (max-width: 480px) {
+  .propertyTitle {
+    font-size: 1.5em;
+  }
+  .mainImage {
+    height: 250px;
+  }
+  .detailPrice {
+    font-size: 1.5em; /* Çok küçük ekranlarda biraz daha küçült */
+  }
+  .contactButton {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+}

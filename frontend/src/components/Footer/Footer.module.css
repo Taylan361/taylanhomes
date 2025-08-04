@@ -1,0 +1,152 @@
+/* frontend/src/components/Footer/Footer.module.css */
+
+.footer {
+  background-color: var(--color-dark-navy); /* Koyu lacivert arka plan */
+  color: var(--color-white);
+  padding: 60px 0 30px; /* Üstte daha fazla boşluk */
+  font-family: var(--font-body);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footerContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive ızgara */
+  gap: 40px; /* Bölümler arası boşluk */
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* İnce ayırıcı çizgi */
+  padding-bottom: 40px;
+}
+
+.footerSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerLogo {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 15px;
+}
+
+.footerDescription {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-light-gray);
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-accent-blue); /* Başlıklar için vurgu rengi */
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background-color: var(--color-accent-blue);
+  border-radius: 2px;
+}
+
+.footerSection ul {
+  list-style: none;
+}
+
+.footerSection ul li {
+  margin-bottom: 10px;
+}
+
+.footerLink {
+  color: var(--color-light-gray);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+  color: var(--color-white);
+}
+
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: var(--color-light-gray);
+}
+
+.contactInfo .contactIcon {
+  color: var(--color-accent-blue);
+  font-size: 1.1rem;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.socialIcon {
+  color: var(--color-white);
+  font-size: 1.8rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.socialIcon:hover {
+  color: var(--color-accent-blue);
+  transform: translateY(-3px);
+}
+
+.copyright {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-medium-gray);
+  margin-top: 30px;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 0 20px;
+  }
+  .footerContent {
+    grid-template-columns: 1fr; /* Mobil için tek sütun */
+    gap: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+  }
+  .footerLogo {
+    font-size: 1.8rem;
+  }
+  .sectionTitle {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  .footerDescription,
+  .footerLink,
+  .contactInfo {
+    font-size: 0.9rem;
+  }
+  .socialIcon {
+    font-size: 1.5rem;
+  }
+  .copyright {
+    font-size: 0.75rem;
+    margin-top: 20px;
+  }
+}

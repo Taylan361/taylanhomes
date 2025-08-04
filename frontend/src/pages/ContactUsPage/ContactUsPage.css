@@ -1,0 +1,144 @@
+.contact-us-page {
+  padding-top: var(--header-height); /* Header altından başla */
+  background-color: var(--color-off-white);
+  min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Footer'ı da düşünerek min yükseklik */
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header-banner {
+  background: var(--color-primary-navy); /* Başlık için lacivert arka plan */
+  color: var(--color-white);
+  padding: 60px 20px;
+  text-align: center;
+  margin-bottom: 40px; /* Form ile arasında boşluk bırak */
+}
+
+.page-title {
+  font-size: 3em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  font-size: 1.2em;
+  opacity: 0.8;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.contact-content-wrapper {
+  display: flex;
+  flex-wrap: wrap; /* Küçük ekranlarda alt alta geçsin */
+  justify-content: center;
+  gap: 40px; /* Bölümler arası boşluk */
+  padding: 0 20px 80px; /* Alttan boşluk */
+  max-width: 1200px; /* İçeriği merkezde tut */
+  margin: 0 auto;
+}
+
+/* ContactForm kendi stilini kullanacak */
+.contact-form-container {
+    flex: 1 1 500px; /* Formun esnek genişliği */
+    min-width: 300px; /* Minimum genişlik */
+    box-sizing: border-box; /* Padding ve border dahil olsun */
+}
+
+
+.contact-info-section {
+  flex: 1 1 400px; /* Bilgi kısmının esnek genişliği */
+  min-width: 280px;
+  background-color: var(--color-white);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.section-title {
+  color: var(--color-primary-navy);
+  font-size: 2em;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: var(--color-dark-gray);
+}
+
+.info-icon {
+  font-size: 1.8em;
+  margin-right: 15px;
+  color: var(--color-secondary-orange); /* İkon rengi turuncu olabilir */
+  min-width: 30px; /* İkonun sabit genişliği */
+  text-align: center;
+}
+
+.info-item strong {
+  color: var(--color-primary-navy);
+}
+
+.map-container {
+  margin-top: 30px;
+}
+
+.map-container iframe {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 992px) {
+  .contact-content-wrapper {
+    flex-direction: column; /* Tablet ve mobil cihazlarda alt alta yığılsin */
+    align-items: center;
+  }
+
+  .contact-form-container,
+  .contact-info-section {
+    flex: 1 1 100%; /* Tam genişlik kaplasın */
+    max-width: 700px; /* Maksimum genişlik sınırlaması */
+  }
+
+  .page-title {
+    font-size: 2.5em;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header-banner {
+    padding: 40px 15px;
+  }
+
+  .page-title {
+    font-size: 2em;
+  }
+
+  .page-subtitle {
+    font-size: 1em;
+  }
+
+  .contact-form-container,
+  .contact-info-section {
+    padding: 25px;
+  }
+
+  .section-title {
+    font-size: 1.8em;
+  }
+
+  .info-item {
+    font-size: 1em;
+  }
+
+  .info-icon {
+    font-size: 1.5em;
+    margin-right: 10px;
+  }
+}

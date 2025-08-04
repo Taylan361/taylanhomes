@@ -1,0 +1,84 @@
+/* frontend/src/index.css - Emlak Sitesi Temel Stiller ve Renkler */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+:root {
+  /* Ana Renkler (Koyu Lacivert Tonları) */
+  --color-primary-navy: #1A2E44;      /* Ana Koyu Lacivert */
+  --color-dark-navy: #0F1D2F;         /* Daha Koyu Lacivert */
+  --color-light-navy: #2E4C6D;        /* Hafif Açık Lacivert */
+  --color-accent-blue: #3E8DCF;       /* Vurgu Mavi (Linkler/Butonlar için) */
+
+  /* Nötr Renkler */
+  --color-white: #ffffff;
+  --color-off-white: #f0f2f5;         /* Hafif kirli beyaz / açık gri arka plan */
+  --color-light-gray: #e0e0e0;
+  --color-medium-gray: #a0a0a0;
+  --color-dark-gray: #333333;
+  --color-black: #000000;
+
+  /* Font Aileleri */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+
+/* Evrensel Kutu Boyutlandırma */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body Stilleri */
+body {
+  font-family: var(--font-body);
+  line-height: 1.6;
+  color: var(--color-dark-gray);
+  background-color: var(--color-off-white); /* Genelde sayfaların arka planı için */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Başlık Stilleri */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: #f0f2f5; /* Başlıklar için koyu lacivert */
+  margin-bottom: 0.5em;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-accent-blue); /* Linkler için vurgu rengi */
+}
+
+a:hover {
+  color: var(--color-primary-navy);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Temel Buton Stilleri */
+.btn-primary {
+  background-color: var(--color-accent-blue);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-navy);
+  transform: translateY(-2px);
+}
+
+/* Konteynerler */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}

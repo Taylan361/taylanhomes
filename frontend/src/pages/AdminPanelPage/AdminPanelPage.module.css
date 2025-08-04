@@ -1,0 +1,575 @@
+/* AdminPanelPage.module.css */
+
+/* Kök değişkenler (varsa, buraya ekleyebilirsiniz) */
+:root {
+  --color-primary-navy: #1A2E44;    /* Ana Koyu Lacivert */
+  --color-dark-navy: #0F1D2F;       /* Daha Koyu Lacivert */
+  --color-accent-blue: #3498db;     /* Mevcut mavi tonu */
+  --color-white: #ffffff;
+  --color-red: #e74c3c;
+  --color-green: #2ecc71;
+  --color-gray: #7f8c8d;
+  --color-light-gray: #f0f2f5;
+  --color-dark-gray: #555;
+}
+
+.adminLoginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-light-gray);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.loginTitle {
+  color: var(--color-primary-navy);
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  font-weight: 700;
+}
+
+.loginForm {
+  background-color: var(--color-white);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--color-dark-gray);
+}
+
+.loginInput {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+.loginInput:focus {
+  border-color: var(--color-accent-blue);
+  outline: none;
+}
+
+.loginButton {
+  background-color: var(--color-primary-navy);
+  color: var(--color-white);
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.loginButton:hover {
+  background-color: var(--color-dark-navy);
+  transform: translateY(-2px);
+}
+
+.errorMessage {
+  color: var(--color-red);
+  font-weight: 500;
+  text-align: center;
+}
+
+.adminPanelContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-light-gray);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.adminHeader {
+  background-color: var(--color-primary-navy);
+  color: var(--color-white);
+  padding: 25px 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.adminTitle {
+  font-size: 2.2em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.logoutButton {
+  background-color: var(--color-red);
+  color: var(--color-white);
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logoutButton:hover {
+  background-color: #c0392b; /* Koyu kırmızı */
+}
+
+.adminContent {
+  background-color: var(--color-white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  flex-grow: 1;
+}
+
+.addNewButton {
+  background-color: var(--color-green);
+  color: var(--color-white);
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 25px;
+  transition: background-color 0.3s ease;
+}
+
+.addNewButton:hover {
+  background-color: #27ae60; /* Koyu yeşil */
+}
+
+.propertyFormContainer {
+  background-color: var(--color-light-gray);
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.propertyFormContainer h3 {
+  color: var(--color-primary-navy);
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  text-align: center;
+}
+
+.propertyForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.propertyForm .formGroup label {
+  color: var(--color-dark-navy);
+}
+
+.propertyForm input[type="text"],
+.propertyForm input[type="number"],
+.propertyForm textarea,
+.propertyForm select {
+  width: calc(100% - 24px); /* Padding'i hesaba kat */
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+.propertyForm input[type="text"]:focus,
+.propertyForm input[type="number"]:focus,
+.propertyForm textarea:focus,
+.propertyForm select:focus {
+  border-color: var(--color-accent-blue);
+  outline: none;
+}
+
+.propertyForm textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.priceInputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.twoColumnGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-accent-blue); /* Checkbox rengi */
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.saveButton, .cancelButton {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton {
+  background-color: var(--color-primary-navy);
+  color: var(--color-white);
+}
+
+.saveButton:hover {
+  background-color: var(--color-dark-navy);
+}
+
+.cancelButton {
+  background-color: var(--color-gray);
+  color: var(--color-white);
+}
+
+.cancelButton:hover {
+  background-color: #6c7a89;
+}
+
+.saveButton:disabled, .cancelButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.propertiesList h3 {
+  color: var(--color-primary-navy);
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  text-align: center;
+}
+
+.propertiesTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: var(--color-white);
+  border-radius: 10px;
+  overflow: hidden; /* Köşeler için */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.propertiesTable th, .propertiesTable td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.propertiesTable th {
+  background-color: var(--color-primary-navy);
+  color: var(--color-white);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.propertiesTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.propertiesTable tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+.actionButton {
+  background-color: var(--color-accent-blue);
+  color: var(--color-white);
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #2980b9;
+}
+
+.deleteButton {
+  background-color: var(--color-red);
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+}
+
+.loadingMessage, .uploadingMessage, .noPropertiesFound {
+  text-align: center;
+  padding: 20px;
+  color: var(--color-gray);
+  font-size: 1.1em;
+}
+
+/* Güncellenmiş resim thumbnail stili */
+.propertyThumbnail {
+  width: 100px; /* Genişliği artır */
+  height: 75px; /* Yüksekliği artır */
+  object-fit: cover; /* Resmin oranlarını koruyarak kutuyu doldur */
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Resim önizleme stilleri */
+.imagePreviewContainer {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.imagePreview {
+  max-width: 200px;
+  max-height: 150px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.galleryPreviewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.galleryImagePreview {
+  width: 100px;
+  height: 75px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.imagePreviewText {
+  font-size: 0.9em;
+  color: var(--color-gray);
+}
+
+.fileInput {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+}
+
+.translateButton {
+  background-color: #8e44ad; /* Mor tonu */
+  color: var(--color-white);
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+  justify-content: center; /* Buton içeriğini ortala */
+}
+
+.translateButton:hover {
+  background-color: #9b59b6; /* Daha açık mor */
+}
+
+/* Custom Alert/Modal Styles */
+.customAlertOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.customAlertBox {
+  background-color: var(--color-white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.customAlertBox p {
+  font-size: 1.1em;
+  color: var(--color-dark-navy);
+  margin-bottom: 25px;
+}
+
+.alertButtons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.customAlertButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: var(--color-accent-blue);
+  color: var(--color-white);
+}
+
+.customAlertButton:hover {
+  background-color: #2980b9;
+}
+
+.cancelAlertButton {
+  background-color: var(--color-gray);
+}
+
+.cancelAlertButton:hover {
+  background-color: #6c7a89;
+}
+
+/* Responsive Ayarlar */
+@media (max-width: 768px) {
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .adminTitle {
+    font-size: 1.8em;
+  }
+
+  .adminContent {
+    padding: 20px;
+  }
+
+  .propertiesTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap; /* İçeriğin tek satırda kalmasını sağlar */
+  }
+
+  .propertiesTable thead {
+    display: none; /* Mobil görünümde başlıkları gizle */
+  }
+
+  .propertiesTable tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: var(--color-white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .propertiesTable td {
+    display: flex;
+    flex-direction: column; /* Mobil görünümde dikey sıralama */
+    align-items: flex-start; /* İçeriği sola hizala */
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .propertiesTable td:last-child {
+    border-bottom: none;
+  }
+
+  .propertiesTable td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-dark-navy);
+    margin-bottom: 5px; /* Etiket ile değer arasına boşluk */
+    flex-basis: auto; /* Esnekliği kaldır */
+    text-align: left;
+    padding-right: 0;
+  }
+
+  .propertiesTable td:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .propertiesTable td:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  .actionButton {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+
+  .actionButton:last-child {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+
+  .priceInputs, .twoColumnGrid {
+    grid-template-columns: 1fr; /* Tek sütun */
+  }
+
+  .propertyForm input[type="text"],
+  .propertyForm input[type="number"],
+  .propertyForm textarea,
+  .propertyForm select {
+    width: calc(100% - 20px); /* Mobil için padding ayarı */
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+.env
+backend/serviceAccountKey.json
+backend/firebase-admin-sdk.json
+.vite/
+dist/

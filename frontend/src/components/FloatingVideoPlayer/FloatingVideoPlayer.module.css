@@ -1,0 +1,83 @@
+/* frontend/src/components/FloatingVideoPlayer/FloatingVideoPlayer.module.css */
+
+.videoContainer {
+  position: fixed; /* Sabit konum */
+  bottom: 20px;    /* Sağ altta 20px yukarıda */
+  right: 20px;     /* Sağ altta 20px solda */
+  width: 280px;    /* Video genişliği */
+  height: 160px;   /* Video yüksekliği (16:9 oranında) */
+  border-radius: 10px;
+  overflow: hidden; /* Köşelerin yuvarlak olmasını sağlar */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 2000; /* Diğer her şeyin üzerinde görünmesini sağlar */
+  background-color: var(--color-dark-navy); /* Yüklenirken veya boşken arka plan */
+}
+
+.videoPlayer {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Videonun konteyneri doldurmasını sağlar */
+  display: block;
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam kontrol çubuğu */
+  display: flex;
+  justify-content: flex-end; /* Kontrolleri sağa hizala */
+  padding: 5px;
+  gap: 5px;
+}
+
+.controlButton {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.controlButton:hover {
+  color: var(--color-accent-blue); /* Üzerine gelince vurgu rengi */
+}
+
+.videoTitle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Yarı saydam arka plan */
+  color: var(--color-white);
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  z-index: 1; /* Kontrollerden daha düşük, video üstünde */
+  box-sizing: border-box; /* Padding'in genişliği etkilememesi için */
+}
+
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+  .videoContainer {
+    width: 220px;
+    height: 124px; /* 16:9 oranını koru */
+    bottom: 10px;
+    right: 10px;
+  }
+  .controlButton {
+    font-size: 1rem;
+  }
+  .videoTitle {
+    font-size: 0.8rem; /* Mobil için font boyutunu küçült */
+    padding: 6px 8px;
+  }
+}

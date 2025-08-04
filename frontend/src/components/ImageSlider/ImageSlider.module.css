@@ -1,0 +1,92 @@
+/* frontend/src/components/ImageSlider/ImageSlider.module.css */
+
+.sliderContainer {
+  position: absolute; /* HeroSection içinde konumlanacak */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sliderImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Resmin konteyneri doldurmasını sağlar */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam arka plan */
+  color: var(--color-white);
+  border: none;
+  padding: 15px 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 10; /* Resmin ve overlay'in üzerinde olsun */
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navButton:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.prevButton {
+  left: 20px;
+}
+
+.nextButton {
+  right: 20px;
+}
+
+.dotsContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dot.activeDot {
+  background-color: var(--color-accent-blue); /* Aktif nokta rengi */
+  transform: scale(1.2);
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+  .navButton {
+    padding: 10px 5px;
+    font-size: 1.2rem;
+  }
+  .prevButton {
+    left: 10px;
+  }
+  .nextButton {
+    right: 10px;
+  }
+  .dotsContainer {
+    bottom: 10px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}

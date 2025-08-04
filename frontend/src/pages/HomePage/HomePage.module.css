@@ -1,0 +1,497 @@
+/* frontend/src/pages/HomePage/HomePage.module.css */
+
+:root {
+  --color-primary-navy: #1A2C42;
+  --color-dark-blue: #2A4058;
+  --color-accent-blue: #3E8DCF;
+  --color-accent-blue-darker: #357BBF;
+  --color-white: #ffffff;
+  --color-off-white: #f8f9fa;
+  --color-light-gray: #e9ecef;
+  --color-medium-gray: #868e96;
+  --color-dark-gray: #495057;
+  --color-black: #212529;
+  --color-red: #dc3545;
+
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --header-height: 80px;
+  --footer-height: 200px;
+  --banner-height: 150px;
+}
+
+.homePage {
+  font-family: var(--font-body);
+  color: var(--color-dark-gray);
+  background-color: var(--color-off-white);
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+}
+
+/* Hero Section */
+.heroSection {
+  position: relative;
+  height: 500px; /* Daha büyük bir hero alanı */
+  overflow: hidden; /* Slider içeriğinin taşmasını engelle */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.heroSlider .slick-prev,
+.heroSlider .slick-next {
+  z-index: 10; /* Okların içeriğin üzerinde olmasını sağla */
+  color: var(--color-white) !important; /* Ok rengi */
+  font-size: 40px !important; /* Ok boyutu */
+}
+
+.heroSlider .slick-prev {
+  left: 25px;
+}
+
+.heroSlider .slick-next {
+  right: 25px;
+}
+
+.heroSlide {
+  height: 500px; /* Slider slaytlarının yüksekliği */
+  background-size: cover;
+  background-position: center;
+  display: flex !important; /* Flexbox'ı zorla */
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.heroSlide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Hafif koyu overlay */
+  z-index: 1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 20px;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.heroContent h1 {
+  font-family: var(--font-heading);
+  font-size: 3.5em; /* Daha büyük başlık */
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.heroContent p {
+  font-size: 1.5em; /* Daha büyük alt başlık */
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.heroButton {
+  display: inline-block;
+  background-color: var(--color-accent-blue);
+  color: var(--color-white);
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1.3em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.heroButton:hover {
+  background-color: var(--color-accent-blue-darker);
+  transform: translateY(-2px);
+}
+
+/* Featured Properties Section */
+.featuredPropertiesSection {
+  padding: 50px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.featuredPropertiesSection h2 {
+  font-family: var(--font-heading);
+  font-size: 2.5em;
+  color: var(--color-primary-navy);
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.featuredPropertiesSection h2::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--color-accent-blue);
+  border-radius: 2px;
+}
+
+/* Properties Grid (Slider yerine) */
+.propertiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 300px minimum genişlik, eşit sütunlar */
+  gap: 30px; /* Kartlar arası boşluk */
+  justify-content: center; /* Kartları ortala */
+  align-items: stretch; /* Kartların eşit yüksekliğe sahip olmasını sağlar */
+  padding: 0 20px; /* Kenarlara yapışmasını engellemek için */
+}
+
+.propertyCardWrapper {
+  display: flex; /* İçindeki kartın yüksekliğini doldurmasını sağlar */
+  height: 100%; /* Eşit yükseklik için */
+}
+
+/* Property Card Styles (PropertyCard.module.css'ten esinlenerek) */
+.propertyCard {
+  background-color: var(--color-white);
+  border-radius: 10px;
+  border: 1px solid var(--color-light-gray);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  width: 100%; /* Kapsayıcısının genişliğini doldur */
+  height: 100%; /* Kapsayıcısının yüksekliğini doldur */
+}
+
+.propertyCard:hover {
+  border-color: var(--color-accent-blue);
+  transform: translateY(-5px); /* Hafif yukarı kaydırma */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Daha belirgin gölge */
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%; /* 4:3 oranında görsel alanı */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--color-light-gray);
+}
+
+.propertyImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.propertyCard:hover .propertyImage {
+  transform: scale(1.05);
+}
+
+.propertyTypeBadge { /* propertyType yerine propertyTypeBadge kullanıldı */
+  position: absolute;
+  top: 10px;
+  left: -5px;
+  background-color: #E74C3C; /* Canlı kırmızı */
+  color: var(--color-white);
+  padding: 8px 18px;
+  border-radius: 0 5px 5px 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  z-index: 2;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  transform: rotate(-4deg);
+  transform-origin: top left;
+}
+
+.info {
+  padding: 15px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.propertyName {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary-navy); /* Koyu lacivert */
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.propertyLocation {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-medium-gray);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: var(--color-dark-gray);
+}
+
+.features span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.features svg {
+  color: var(--color-accent-blue);
+}
+
+.propertyPrice {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-accent-blue);
+  margin-top: auto; /* Fiyatı en alta it */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Satıldı bandı */
+.soldOverlay {
+  position: absolute;
+  top: 7px;
+  right: -20px;
+  background-color: #FF0000;
+  color: var(--color-white);
+  padding: 3px 10px;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  transform: rotate(36deg);
+  transform-origin: 50% 50%;
+  z-index: 5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 90px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.soldText {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #FF0000;
+  margin: 0 auto 10px auto;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Slick Slider Customizations (Hero için hala geçerli) */
+.slick-prev:before,
+.slick-next:before {
+  color: var(--color-white) !important; /* Hero slider okları beyaz olsun */
+  font-size: 30px !important;
+}
+
+.slick-dots li button:before {
+  color: var(--color-accent-blue) !important;
+  font-size: 10px !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: var(--color-primary-navy) !important;
+}
+
+/* Loading and Error Messages */
+.loading, .error {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2em;
+  color: var(--color-primary-navy);
+}
+
+.error {
+  color: var(--color-red);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .heroSection, .heroSlide {
+    height: 450px;
+  }
+  .heroContent h1 {
+    font-size: 3em;
+  }
+  .heroContent p {
+    font-size: 1.3em;
+  }
+  .featuredPropertiesSection h2 {
+    font-size: 2.2em;
+  }
+  .propertiesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Tablet için daha küçük kartlar */
+    gap: 20px;
+  }
+  .propertyImage {
+    height: 220px; /* Tablet için biraz küçült */
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection, .heroSlide {
+    height: 400px;
+  }
+  .heroContent h1 {
+    font-size: 2.5em;
+  }
+  .heroContent p {
+    font-size: 1.1em;
+  }
+  .heroButton {
+    padding: 12px 25px;
+    font-size: 1.1em;
+  }
+  .featuredPropertiesSection {
+    padding: 30px 10px;
+  }
+  .featuredPropertiesSection h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+  }
+  .propertiesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Mobil için daha küçük kartlar */
+    gap: 15px;
+  }
+  .propertyImage {
+    height: 180px; /* Mobil için daha da küçült */
+  }
+  .propertyCardWrapper {
+    padding: 0; /* Mobil için boşlukları kaldır */
+  }
+  .propertyCard {
+    margin-bottom: 0; /* Mobil için kartlar arası boşluk */
+  }
+  .propertyName {
+    font-size: 1.1rem; /* Mobil için küçült */
+  }
+  .propertyPrice {
+    font-size: 1.3rem; /* Mobil için küçült */
+  }
+  .features {
+    flex-direction: column; /* Mobil için alt alta */
+    gap: 8px;
+  }
+  .features span {
+    font-size: 0.85rem;
+  }
+  .propertyTypeBadge {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+  }
+  .soldOverlay {
+    font-size: 0.55rem;
+    width: 85px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroSection, .heroSlide {
+    height: 350px;
+  }
+  .heroContent h1 {
+    font-size: 2em;
+  }
+  .heroContent p {
+    font-size: 1em;
+  }
+  .heroButton {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  .propertiesGrid {
+    grid-template-columns: 1fr; /* Tek sütun */
+    gap: 20px;
+  }
+  .propertyImage {
+            height: -webkit-fill-available;
+  }
+  .heroSlider .slick-prev,
+  .heroSlider .slick-next {
+    font-size: 30px !important;
+  }
+  .heroSlider .slick-prev {
+    left: 10px;
+  }
+  .heroSlider .slick-next {
+    right: 10px;
+  }
+  .propertyName {
+    font-size: 1rem;
+  }
+  .propertyPrice {
+    font-size: 1.2rem;
+  }
+  .features span {
+    font-size: 0.8rem;
+  }
+  .propertyTypeBadge {
+    font-size: 0.7rem;
+    padding: 5px 12px;
+  }
+  .soldOverlay {
+    font-size: 0.5rem;
+    width: 75px;
+    height: 18px;
+  }
+}

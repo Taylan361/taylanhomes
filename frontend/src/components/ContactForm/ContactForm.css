@@ -1,0 +1,128 @@
+.contact-form-container {
+  max-width: 700px; /* Formun genişliğini sınırlayın */
+  margin: 40px auto; /* Üstten ve alttan boşluk, yatayda ortala */
+  padding: 40px;
+  background-color: var(--color-white); /* Beyaz arka plan */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+  font-family: 'Open Sans', sans-serif; /* Global font ile uyumlu olsun */
+  color: var(--color-dark-gray);
+}
+
+.contact-form-title {
+  text-align: center;
+  color: var(--color-primary-navy); /* Koyu lacivert başlık */
+  margin-bottom: 30px;
+  font-size: 2.2em;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--color-primary-navy); /* Lacivert label metni */
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--color-light-gray); /* Hafif gri kenarlık */
+  border-radius: 6px;
+  font-size: 1em;
+  color: var(--color-dark-gray);
+  box-sizing: border-box; /* Padding'in genişliğe dahil olmasını sağlar */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group textarea:focus {
+  border-color: var(--color-secondary-orange); /* Turuncu odaklanma rengi */
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2); /* Hafif turuncu gölge */
+  outline: none; /* Varsayılan odaklanma çizgisini kaldır */
+}
+
+.form-group textarea {
+  resize: vertical; /* Sadece dikeyde yeniden boyutlandırmaya izin ver */
+  min-height: 120px;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 15px 25px;
+  background-color: var(--color-primary-navy); /* Koyu lacivert buton */
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.submit-button:hover {
+  background-color: var(--color-dark-blue); /* Hafif koyu lacivert hover */
+  transform: translateY(-2px); /* Hafif yukarı kalkma efekti */
+}
+
+.submit-button:disabled {
+  background-color: var(--color-light-gray);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success-message {
+  background-color: #d4edda; /* Açık yeşil */
+  color: #155724; /* Koyu yeşil */
+  border: 1px solid #c3e6cb;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.error-message {
+  background-color: #f8d7da; /* Açık kırmızı */
+  color: #721c24; /* Koyu kırmızı */
+  border: 1px solid #f5c6cb;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Responsive Düzenlemeler */
+@media (max-width: 768px) {
+  .contact-form-container {
+    margin: 20px auto;
+    padding: 25px;
+  }
+
+  .contact-form-title {
+    font-size: 1.8em;
+  }
+
+  .submit-button {
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-form-container {
+    margin: 15px 10px;
+    padding: 20px;
+  }
+}

@@ -1,0 +1,225 @@
+/* frontend/src/pages/AboutUsPage/AboutUsPage.module.css */
+
+.aboutUsPage {
+  padding-bottom: 50px;
+  background-color: var(--color-off-white);
+}
+
+.pageHeader {
+  background-color: var(--color-primary-navy);
+  color: var(--color-white);
+  padding: 40px 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.pageTitle {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 5px; /* Alt başlığa yakınlaştırdık */
+  color: var(--color-white);
+}
+
+.pageSubtitle { /* Yeni eklenen alt başlık stili */
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+.breadcrumbs {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.breadcrumbs a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-accent-blue);
+}
+
+.breadcrumbs span {
+  color: var(--color-accent-blue);
+}
+
+.breadcrumbs span::before {
+  content: '/';
+  margin: 0 8px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.aboutContentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Bölümler arası boşluk */
+}
+
+.sectionBlock {
+  background-color: var(--color-white);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.sectionHeading {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-dark-navy);
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.sectionHeading::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--color-accent-blue);
+  border-radius: 2px;
+}
+
+.sectionText {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-dark-gray);
+  text-align: justify; /* Metni iki yana yasla */
+}
+
+.valuesGrid { /* Yeni: Değerler için grid düzeni */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.valueItem {
+  background-color: var(--color-off-white);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05); /* İç gölge */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.valueItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.valueItem h3 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: var(--color-accent-blue);
+  margin-bottom: 10px;
+}
+
+.valueItem p {
+  font-size: 0.9rem;
+  color: var(--color-dark-gray);
+  line-height: 1.6;
+}
+
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.projectItem { /* Her proje öğesi için kapsayıcı */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.projectItem:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.projectImage {
+  width: 100%;
+  height: 200px; /* Sabit yükseklik */
+  object-fit: cover;
+  display: block; /* Resim altındaki boşluğu kaldırır */
+}
+
+.projectCaption { /* Resim altındaki açıklama */
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-dark-gray);
+  padding: 10px;
+  text-align: center;
+  background-color: var(--color-off-white);
+  border-top: 1px solid var(--color-light-gray);
+}
+
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+  .pageHeader {
+    padding: 30px 15px;
+    margin-bottom: 30px;
+  }
+  .pageTitle {
+    font-size: 2.2rem;
+  }
+  .pageSubtitle {
+    font-size: 1rem;
+  }
+  .breadcrumbs {
+    font-size: 0.8rem;
+  }
+  .aboutContentContainer {
+    padding: 0 15px;
+    gap: 30px;
+  }
+  .sectionBlock {
+    padding: 20px;
+  }
+  .sectionHeading {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  .sectionText {
+    font-size: 0.9rem;
+  }
+  .valuesGrid {
+    grid-template-columns: 1fr; /* Mobil için tek sütun */
+    gap: 20px;
+  }
+  .valueItem h3 {
+    font-size: 1.2rem;
+  }
+  .valueItem p {
+    font-size: 0.85rem;
+  }
+  .projectsGrid {
+    grid-template-columns: 1fr; /* Mobil için tek sütun */
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .projectImage {
+    height: 180px;
+  }
+}
