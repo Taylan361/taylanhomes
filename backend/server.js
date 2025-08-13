@@ -9,7 +9,7 @@
     const PORT = process.env.PORT || 5000;
 
     // Firebase Admin SDK'sını başlat
-    const serviceAccount = require('./serviceAccountKey.json'); // serviceAccountKey.json dosyanızın doğru yolda olduğundan emin olun
+    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
       // KRİTİK: Firestore'a undefined değerlerin gönderilmesi hatasını önlemek için bu ayar mutlaka olmalı.
