@@ -38,7 +38,11 @@ const auth = getAuth(app);
 //const db = getFirestore(app); // Firestore'u başlat
 
 // Backend URL'nizi buraya ekleyin
-const API_BASE_URL = 'http://localhost:5000'; // Backend sunucunuzun adresi
+// Eski kod (muhtemelen bu şekildeydi)
+// const API_BASE_URL = 'http://localhost:5000';
+
+// Yeni kod
+const API_BASE_URL = 'https://taylanhomes.onrender.com';
 
 
 
