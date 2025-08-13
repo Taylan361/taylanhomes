@@ -2,9 +2,9 @@ export interface Property {
   id?: string;  // yeni eklenirken id olmayabilir, o yüzden optional yap
   nameKey: string;
   descriptionKey?: string;
-  priceTRY?: number | string | null;
-  priceUSD?: number | string | null;
-  priceEUR?: number | string | null;
+  priceTRY?: number;
+  priceUSD?: number;
+  priceEUR?: number;
   imageUrl: string;
   galleryImages?: string[];
   location: string;

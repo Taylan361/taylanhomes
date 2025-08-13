@@ -3,14 +3,7 @@ import React from 'react';
 import styles from './AboutUsPage.module.css';
 import { useTranslation } from 'react-i18next';
 
-const mockProjectImages = [
-  'https://picsum.photos/id/200/800/600',
-  'https://picsum.photos/id/201/800/600',
-  'https://picsum.photos/id/202/800/600',
-  'https://picsum.photos/id/203/800/600',
-  'https://picsum.photos/id/204/800/600',
-  'https://picsum.photos/id/205/800/600',
-];
+
 
 const AboutUsPage: React.FC = () => {
   const { t } = useTranslation();

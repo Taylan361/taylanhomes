@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+//import { getFirestore } from 'firebase/firestore';
 import styles from './AdminPanelPage.module.css';
 import { FaEdit, FaTrash, FaPlus, FaGlobe } from 'react-icons/fa';
 import 'leaflet/dist/leaflet.css';
@@ -32,7 +32,7 @@ const firebaseConfig = {
 // Firebase uygulamasını başlat
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app); // Firestore'u başlat
+//const db = getFirestore(app); // Firestore'u başlat
 
 // Backend URL'nizi buraya ekleyin
 const API_BASE_URL = 'http://localhost:5000'; // Backend sunucunuzun adresi
@@ -691,32 +691,44 @@ const AdminPanelPage: React.FC = () => {
                 <div className={styles.formGroup}>
                   <label>{t('priceTRY')}:</label>
                   <input
-                    type="text"
-                    className={styles.numberInputNoArrows}
-                    value={editingProperty?.priceTRY !== undefined && editingProperty?.priceTRY !== null ? formatNumberForDisplay(editingProperty.priceTRY) : ''}
-                    onChange={(e) => setEditingProperty(prev => ({ ...prev!, priceTRY: e.target.value }))}
-                    required
-                  />
+                      type="text"
+                       className={styles.numberInputNoArrows}
+                      value={editingProperty?.priceTRY !== undefined && editingProperty?.priceTRY !== null
+                       ? formatNumberForDisplay(editingProperty.priceTRY)
+                              : ''}
+                      onChange={(e) =>
+                              setEditingProperty(prev => prev ? { ...prev, priceTRY: Number(e.target.value) } : prev)
+                               }
+                             required
+                    />
                 </div>
                 <div className={styles.formGroup}>
                   <label>{t('priceUSD')}:</label>
-                  <input
-                    type="text"
-                    className={styles.numberInputNoArrows}
-                    value={editingProperty?.priceUSD !== undefined && editingProperty?.priceUSD !== null ? formatNumberForDisplay(editingProperty.priceUSD) : ''}
-                    onChange={(e) => setEditingProperty(prev => ({ ...prev!, priceUSD: e.target.value }))}
-                    required
-                  />
+                 <input
+  type="text"
+  className={styles.numberInputNoArrows}
+  value={editingProperty?.priceUSD !== undefined && editingProperty?.priceUSD !== null
+    ? formatNumberForDisplay(editingProperty.priceUSD)
+    : ''}
+  onChange={(e) =>
+    setEditingProperty(prev => prev ? { ...prev, priceUSD: Number(e.target.value) } : prev)
+  }
+  required
+/>
                 </div>
                 <div className={styles.formGroup}>
                   <label>{t('priceEUR')}:</label>
                   <input
-                    type="text"
-                    className={styles.numberInputNoArrows}
-                    value={editingProperty?.priceEUR !== undefined && editingProperty?.priceEUR !== null ? formatNumberForDisplay(editingProperty.priceEUR) : ''}
-                    onChange={(e) => setEditingProperty(prev => ({ ...prev!, priceEUR: e.target.value }))}
-                    required
-                  />
+  type="text"
+  className={styles.numberInputNoArrows}
+  value={editingProperty?.priceEUR !== undefined && editingProperty?.priceEUR !== null
+    ? formatNumberForDisplay(editingProperty.priceEUR)
+    : ''}
+  onChange={(e) =>
+    setEditingProperty(prev => prev ? { ...prev, priceEUR: Number(e.target.value) } : prev)
+  }
+  required
+/>
                 </div>
               </div>
 

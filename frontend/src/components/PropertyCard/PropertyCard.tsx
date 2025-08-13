@@ -4,26 +4,9 @@ import styles from './PropertyCard.module.css';
 import { useTranslation } from 'react-i18next';
 import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaMap, FaTh } from 'react-icons/fa'; // Yeni ikonlar eklendi
 import { useCurrency } from '../../context/CurrencyContext';
+import type { Property } from '../../types/Property';
 
-// İlan tipi tanımı (TypeScript için önemli)
-interface Property {
-  id: string;
-  nameKey: string; // İlan adı için çeviri anahtarı
-  descriptionKey?: string; // Açıklama için çeviri anahtarı (opsiyonel)
-  priceTRY?: number; // TL fiyatı
-  priceUSD?: number; // USD fiyatı
-  priceEUR?: number; // EUR fiyatı
-  imageUrl: string;
-  galleryImages?: string[]; // Galeri görselleri (opsiyonel)
-  location: string;
-  bedrooms?: number; // Yatak odası sayısı (daireler için)
-  bathrooms?: number; // Banyo sayısı (daireler için)
-  area?: number; // Alan (metrekare)
-  type: 'apartment' | 'land'; // İlan tipi
-  status?: 'available' | 'sold'; // Yeni: İlan durumu
-  blockNumber?: string; // Ada No (arsalar için) - EKLENDİ
-  parcelNumber?: string; // Parsel No (arsalar için) - EKLENDİ
-}
+
 
 interface PropertyCardProps {
   property: Property;

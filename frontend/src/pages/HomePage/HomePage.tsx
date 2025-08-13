@@ -93,7 +93,11 @@ const HomePage: React.FC = () => {
           <div className={styles.propertiesGrid}> {/* Yeni grid container */}
             {featuredProperties.map(property => {
               const isSold = property.status === 'sold';
-              const displayPrice = getPriceForCurrency(property.priceTRY, property.priceUSD, property.priceEUR);
+              const displayPrice = getPriceForCurrency({
+              TRY: property.priceTRY,
+              USD: property.priceUSD,
+              EUR: property.priceEUR
+            });
               const currencySymbol = getCurrencySymbol(selectedCurrency);
 
               return (
@@ -136,9 +140,11 @@ const HomePage: React.FC = () => {
                           <span><FaTh /> {t('parcel_number')}: {property.parcelNumber}</span>
                         </div>
                       )}
-                      {!isSold && displayPrice !== undefined && (
-                        <p className={styles.propertyPrice}>{currencySymbol} {displayPrice.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
-                      )}
+                     {!isSold && typeof displayPrice === 'number' && (
+  <p className={styles.propertyPrice}>
+    {currencySymbol} {displayPrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+  </p>
+)}
                       {isSold && (
                         <p className={styles.soldText}>{t('sold_status')}</p>
                       )}

@@ -4,7 +4,7 @@ import PropertyCard from '../PropertyCard/PropertyCard';
 import styles from './PropertyGrid.module.css';
 import { useTranslation } from 'react-i18next';
 import { fetchProperties } from '../../services/api';
-import type { Property } from '../../types/Property';
+import type { Property } from "../../types/Property";
 
 interface PropertyGridProps {
   layoutType?: 'single-column' | 'multi-column';

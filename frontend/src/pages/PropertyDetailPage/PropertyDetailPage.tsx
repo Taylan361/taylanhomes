@@ -2,20 +2,19 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './PropertyDetailPage.module.css';
-import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaChevronLeft, FaChevronRight, FaBuilding, FaLandmark, FaMap, FaTh, FaTimes } from 'react-icons/fa';
+import { FaBed, FaBath, FaRulerCombined, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaChevronLeft, FaChevronRight, FaBuilding, FaMap, FaTh, FaTimes } from 'react-icons/fa';
 import { useCurrency } from '../../context/CurrencyContext';
 import 'leaflet/dist/leaflet.css'; // Leaflet CSS'ini import et
 import L from 'leaflet';
 import axios from 'axios';
 
 // Leaflet varsayılan ikonlarını düzeltme (görselin bozuk çıkmaması için gerekli)
-if (typeof L.Icon.Default.prototype._getIconUrl === 'undefined') {
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-    iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-  });
-}
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
+
 
 // İlan tipi tanımı (backend'deki ile uyumlu olmalı)
 interface Property {
@@ -102,15 +101,14 @@ const PropertyDetailPage: React.FC = () => {
     const initialZoom = 14;
 
     try {
-      mapRef.current = L.map(mapElement, {
-        center: [lat, lng],
-        zoom: initialZoom,
-        zoomControl: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        dragging: false,
-        interactive: false,
-      });
+    mapRef.current = L.map(mapElement, {
+  center: [lat, lng],
+  zoom: initialZoom,
+  zoomControl: false,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  dragging: false,
+});
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> katkıda bulunanları'
       }).addTo(mapRef.current);

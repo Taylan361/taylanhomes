@@ -1,5 +1,5 @@
 import axios from "axios";
-import  { Property } from "../types/Property";
+import type { Property } from "../types/Property";
 
 const API_URL = "http://localhost:5000/api";
 
