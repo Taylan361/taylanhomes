@@ -65,7 +65,7 @@ const upload = multer({ storage: storage });
 
 // Orta katman (Middleware)
 const corsOptions = {
-  origin: ['https://taylanhomes.com', 'http://localhost:3000'],
+  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -128,11 +128,10 @@ app.get('/api/properties/:id', async (req, res) => {
 app.post('/api/properties/with-files', authenticateToken, upload.fields([
   { name: 'mainImage', maxCount: 1 },
   { name: 'galleryImages', maxCount: 10 },
-  // KRİTİK DÜZELTME: Multer'ın 'data' alanını da işlemesini sağlıyoruz.
-  { name: 'data', maxCount: 1 }
+  { name: 'data', maxCount: 1 }
 ]), async (req, res) => {
   try {
-    const data = JSON.parse(req.body.data); // Frontend'den gelen JSON string'i parse et
+    const data = JSON.parse(req.body.data);
     const mainImageFile = req.files['mainImage'] ? req.files['mainImage'][0] : null;
     const galleryImageFiles = req.files['galleryImages'] || [];
 
@@ -167,12 +166,11 @@ app.post('/api/properties/with-files', authenticateToken, upload.fields([
 app.put('/api/properties/:id/with-files', authenticateToken, upload.fields([
   { name: 'mainImage', maxCount: 1 },
   { name: 'galleryImages', maxCount: 10 },
-  // KRİTİK DÜZELTME: Multer'ın 'data' alanını da işlemesini sağlıyoruz.
-  { name: 'data', maxCount: 1 }
+  { name: 'data', maxCount: 1 }
 ]), async (req, res) => {
   try {
     const propertyId = req.params.id;
-    const data = JSON.parse(req.body.data); // Frontend'den gelen JSON string'i parse et
+    const data = JSON.parse(req.body.data);
     const mainImageFile = req.files['mainImage'] ? req.files['mainImage'][0] : null;
     const galleryImageFiles = req.files['galleryImages'] || [];
 
