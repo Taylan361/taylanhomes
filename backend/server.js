@@ -64,7 +64,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Orta katman (Middleware)
-app.use(cors());
+// CORS ayarlarını yapılandırın
+const corsOptions = {
+  // Canlı ortam için frontend URL'ini ve yerel ortam için localhost'u ekledik.
+  origin: ['https://taylanhomes.com', 'http://localhost:3000'],
+  optionsSuccessStatus: 200 // Bazı eski tarayıcılar için
+};
+app.use(cors(corsOptions));
+
 app.use(express.json()); // JSON body parsing
 app.use(express.urlencoded({ extended: true })); // URL-encoded body parsing
 
