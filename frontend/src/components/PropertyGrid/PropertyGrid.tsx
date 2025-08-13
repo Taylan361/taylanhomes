@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import PropertyCard from '../PropertyCard/PropertyCard';
 import styles from './PropertyGrid.module.css';
 import { useTranslation } from 'react-i18next';
-import { fetchProperties } from '../../services/api';
+import { fetchAllProperties } from '../../services/api';
 import type { Property } from "../../types/Property";
 
 interface PropertyGridProps {
@@ -24,7 +24,7 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
 
   useEffect(() => {
     if (!properties) {
-      fetchProperties().then(setData).catch(console.error);
+      fetchAllProperties().then(setData).catch(console.error);
     }
   }, [properties]);
 
