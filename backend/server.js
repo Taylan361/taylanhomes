@@ -92,10 +92,17 @@ const authenticateToken = async (req, res, next) => {
   }
 };
 
-// İlanları getirme (HERKESE AÇIK)
+// KRİTİK DEĞİŞİKLİK: İlanları getirme (hem tümü hem de öne çıkanlar için)
 app.get('/api/properties', async (req, res) => {
   try {
-    const propertiesRef = db.collection('properties');
+    const isFeaturedQuery = req.query.isFeatured;
+    let propertiesRef = db.collection('properties');
+
+    if (isFeaturedQuery === 'true') {
+      // Eğer isFeatured=true parametresi varsa, sadece öne çıkan ilanları filtrele
+      propertiesRef = propertiesRef.where('isFeatured', '==', true);
+    }
+
     const snapshot = await propertiesRef.get();
     const properties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.status(200).json(properties);
@@ -104,6 +111,7 @@ app.get('/api/properties', async (req, res) => {
     res.status(500).json({ message: 'Sunucu hatası, ilanlar getirilemedi.' });
   }
 });
+
 
 // Tek bir ilanı getirme (PropertyDetailPage için - Zaten herkese açık)
 app.get('/api/properties/:id', async (req, res) => {
