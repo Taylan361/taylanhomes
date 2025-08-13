@@ -7,7 +7,7 @@ import { useCurrency } from '../../context/CurrencyContext';
 import HeroSection from '../../components/HeroSection/HeroSection'; // HeroSection bileşenini import et
 
 // Backend URL'nizi buraya ekleyin
-const API_BASE_URL = 'http://localhost:5000'; // Backend sunucunuzun adresi
+const API_BASE_URL = 'https://taylanhomes.onrender.com'; // Backend sunucunuzun adresi
 
 // Property type definition (should match backend)
 interface Property {

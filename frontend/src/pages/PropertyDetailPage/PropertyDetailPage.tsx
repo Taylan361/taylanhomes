@@ -79,7 +79,7 @@ const PropertyDetailPage: React.FC = () => {
   const mapElementRef = useRef<HTMLDivElement>(null);
 
   // Backend URL'nizi buraya ekleyin
-  const API_BASE_URL = 'http://localhost:5000';
+  const API_BASE_URL = 'https://taylanhomes.onrender.com';
 
   const initMap = useCallback((lat: number, lng: number) => {
     console.log(`[initMap] Harita başlatma çağrıldı: Lat: ${lat}, Lng: ${lng}`);

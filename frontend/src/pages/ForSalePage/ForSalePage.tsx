@@ -5,7 +5,7 @@ import { FaArrowDown } from 'react-icons/fa'; // Sadece aşağı ok ikonu için
 import styles from './ForSalePage.module.css';
 
 // Backend URL'nizi buraya ekleyin
-const API_BASE_URL = 'http://localhost:5000'; // Backend sunucunuzun adresi
+const API_BASE_URL = 'https://taylanhomes.onrender.com'; // Backend sunucunuzun adresi
 
 // İlan tipi tanımı (backend'deki ile uyumlu olmalı)
 interface Property {
