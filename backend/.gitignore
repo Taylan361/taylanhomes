@@ -5,5 +5,5 @@ dist/
 .env
 
 # Firebase service account secrets
-backend/firebase-admin-sdk.json
+
 backend/serviceAccountKey.json
