@@ -46,7 +46,10 @@ interface CustomAlert {
   actionId?: string; // Onay gerektiren eylemler için ID
 }
 
+
+
 const AdminPanelPage: React.FC = () => {
+  
   const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState('');
@@ -58,6 +61,23 @@ const AdminPanelPage: React.FC = () => {
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+
+  const handleNumericChange = (e: React.ChangeEvent<HTMLInputElement>, currency: 'TRY' | 'USD' | 'EUR') => {
+    const { value } = e.target;
+    // Sadece rakamları ve ondalık ayırıcı olarak sadece ilk noktayı kabul et
+    let cleanedValue = value.replace(/[^0-9.]/g, '');
+    const parts = cleanedValue.split('.');
+    if (parts.length > 2) {
+        cleanedValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    const numericValue = parseFloat(cleanedValue) || 0;
+
+    setEditingProperty(prev => {
+        if (!prev) return null;
+        return { ...prev, [`price${currency}`]: numericValue };
+    });
+};
 
   // Resim yükleme için state'ler
   const [mainImageFile, setMainImageFile] = useState<File | null>(null);
@@ -686,51 +706,39 @@ const AdminPanelPage: React.FC = () => {
                 </button>
               )}
 
-              {/* Price Information */}
-              <div className={styles.priceInputs}>
-                <div className={styles.formGroup}>
-                  <label>{t('priceTRY')}:</label>
-                  <input
-                      type="text"
-                       className={styles.numberInputNoArrows}
-                      value={editingProperty?.priceTRY !== undefined && editingProperty?.priceTRY !== null
-                       ? formatNumberForDisplay(editingProperty.priceTRY)
-                              : ''}
-                      onChange={(e) =>
-                              setEditingProperty(prev => prev ? { ...prev, priceTRY: Number(e.target.value) } : prev)
-                               }
-                             required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                  <label>{t('priceUSD')}:</label>
-                 <input
-  type="text"
-  className={styles.numberInputNoArrows}
-  value={editingProperty?.priceUSD !== undefined && editingProperty?.priceUSD !== null
-    ? formatNumberForDisplay(editingProperty.priceUSD)
-    : ''}
-  onChange={(e) =>
-    setEditingProperty(prev => prev ? { ...prev, priceUSD: Number(e.target.value) } : prev)
-  }
-  required
-/>
-                </div>
-                <div className={styles.formGroup}>
-                  <label>{t('priceEUR')}:</label>
-                  <input
-  type="text"
-  className={styles.numberInputNoArrows}
-  value={editingProperty?.priceEUR !== undefined && editingProperty?.priceEUR !== null
-    ? formatNumberForDisplay(editingProperty.priceEUR)
-    : ''}
-  onChange={(e) =>
-    setEditingProperty(prev => prev ? { ...prev, priceEUR: Number(e.target.value) } : prev)
-  }
-  required
-/>
-                </div>
-              </div>
+
+<div className={styles.priceInputs}>
+  <div className={styles.formGroup}>
+    <label>{t('priceTRY')}:</label>
+    <input
+        type="text"
+        className={styles.numberInputNoArrows}
+        value={editingProperty?.priceTRY || ''}
+        onChange={(e) => handleNumericChange(e, 'TRY')}
+        required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <label>{t('priceUSD')}:</label>
+    <input
+      type="text"
+      className={styles.numberInputNoArrows}
+      value={editingProperty?.priceUSD || ''}
+      onChange={(e) => handleNumericChange(e, 'USD')}
+      required
+    />
+  </div>
+  <div className={styles.formGroup}>
+    <label>{t('priceEUR')}:</label>
+    <input
+      type="text"
+      className={styles.numberInputNoArrows}
+      value={editingProperty?.priceEUR || ''}
+      onChange={(e) => handleNumericChange(e, 'EUR')}
+      required
+    />
+  </div>
+</div>
 
               {/* Main Image Upload - Now only file input */}
               <div className={styles.formGroup}>

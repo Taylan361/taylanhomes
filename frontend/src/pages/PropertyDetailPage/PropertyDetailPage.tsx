@@ -7,12 +7,18 @@ import { useCurrency } from '../../context/CurrencyContext';
 import 'leaflet/dist/leaflet.css'; // Leaflet CSS'ini import et
 import L from 'leaflet';
 import axios from 'axios';
+import markerIcon from '../../assets/images/marker-icon.png';
+import markerIcon2x from '../../assets/images/marker-icon-2x.png';
+import markerShadow from '../../assets/images/marker-shadow.png';
 
-// Leaflet varsayılan ikonlarını düzeltme (görselin bozuk çıkmaması için gerekli)
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+const customIcon = L.icon({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 
@@ -112,7 +118,7 @@ const PropertyDetailPage: React.FC = () => {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> katkıda bulunanları'
       }).addTo(mapRef.current);
-      markerRef.current = L.marker([lat, lng]).addTo(mapRef.current);
+      markerRef.current = L.marker([lat, lng], { icon: customIcon }).addTo(mapRef.current);
 
       console.log("[initMap] Leaflet harita başarıyla başlatıldı.");
 
