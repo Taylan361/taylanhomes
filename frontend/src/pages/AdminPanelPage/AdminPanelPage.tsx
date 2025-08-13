@@ -9,6 +9,9 @@ import { FaEdit, FaTrash, FaPlus, FaGlobe } from 'react-icons/fa';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import type { Property } from '../../types/Property';
+import markerIcon from '../../assets/images/marker-icon.png';
+import markerIcon2x from '../../assets/images/marker-icon-2x.png';
+import markerShadow from '../../assets/images/marker-shadow.png';
 
 
 // Leaflet varsayılan ikonlarını düzeltme (görselin bozuk çıkmaması için gerekli)
@@ -49,6 +52,15 @@ interface CustomAlert {
 
 
 const AdminPanelPage: React.FC = () => {
+  const customIcon = L.icon({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
   
   const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
@@ -140,10 +152,11 @@ const AdminPanelPage: React.FC = () => {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> katkıda bulunanları'
         }).addTo(mapRef.current);
 
-        // İşaretleyiciyi oluştur
-        markerRef.current = L.marker([currentLat, currentLng], {
-          draggable: true,
-        }).addTo(mapRef.current);
+       // İşaretleyiciyi oluştur
+markerRef.current = L.marker([currentLat, currentLng], {
+  draggable: true,
+  icon: customIcon, // <-- Bu satırı ekleyin!
+}).addTo(mapRef.current);
 
         // İşaretleyici sürüklendiğinde konum güncelle
         markerRef.current.on('dragend', (event) => {
@@ -192,10 +205,14 @@ const AdminPanelPage: React.FC = () => {
         markerRef.current.setLatLng([currentLat, currentLng]);
       } else {
         // Eğer marker yoksa ve harita var ise, yeni marker oluştur
-        try {
-          markerRef.current = L.marker([currentLat, currentLng], {
-            draggable: true,
-          }).addTo(mapRef.current);
+        // ...
+// Eğer marker yoksa ve harita var ise, yeni marker oluştur
+try {
+  markerRef.current = L.marker([currentLat, currentLng], {
+    draggable: true,
+    icon: customIcon // <-- Bu satırı ekleyin!
+  }).addTo(mapRef.current);
+// ...
 
           markerRef.current.on('dragend', (event) => {
             const latLng = event.target.getLatLng();
