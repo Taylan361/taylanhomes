@@ -3,267 +3,252 @@ const express = require('express');
 const cors = require('cors');
 const admin = require('firebase-admin');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const dotenv = require('dotenv');
 
-// .env dosyasını yerel ortamda okumak için
-// Canlıda (Render'da) bu satır bir şey yapmayacaktır, çünkü ortam değişkenleri zaten tanımlıdır.
-require('dotenv').config();
+// Cloudinary paketlerini içe aktar
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Firebase Admin SDK'sını başlat
-// Canlı (Render) ve yerel ortamlar için koşullu yükleme
 let serviceAccount;
 
 if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-  // Canlı ortamda (Render) çalışıyorsa, ortam değişkenini kullan
-  try {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-  } catch (error) {
-    console.error('FIREBASE_SERVICE_ACCOUNT_KEY JSON formatı geçersiz! Lütfen Render ortam değişkenini kontrol edin.');
-    process.exit(1);
-  }
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+  } catch (error) {
+    console.error('FIREBASE_SERVICE_ACCOUNT_KEY JSON formatı geçersiz!');
+    process.exit(1);
+  }
 } else {
-  // Yerel ortamda çalışıyorsa, dosyadan oku
-  try {
-    serviceAccount = require('./serviceAccountKey.json');
-  } catch (error) {
-    console.error('Yerel serviceAccountKey.json dosyası bulunamadı! Lütfen dosyanın var olduğundan ve .gitignore içinde olmadığından emin olun.');
-    process.exit(1);
-  }
+  try {
+    serviceAccount = require('./serviceAccountKey.json');
+  } catch (error) {
+    console.error('Yerel serviceAccountKey.json dosyası bulunamadı!');
+    process.exit(1);
+  }
 }
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  // KRİTİK: Firestore'a undefined değerlerin gönderilmesi hatasını önlemek için bu ayar mutlaka olmalı.
-  firestore: {
-    ignoreUndefinedProperties: true
-  }
+  credential: admin.credential.cert(serviceAccount),
+  firestore: {
+    ignoreUndefinedProperties: true
+  }
 });
 
 const auth = admin.auth();
 const db = admin.firestore();
 
-// Multer ile dosya yükleme yapılandırması
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, 'uploads');
-    // 'uploads' klasörü yoksa oluştur
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath);
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    // Dosya adını benzersiz hale getir
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
+// Cloudinary'yi .env dosyasından okunan bilgilerle yapılandır
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Multer ile Cloudinary entegrasyonu için depolama ayarı
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'taylanhomes', // Resimlerin Cloudinary'de saklanacağı klasör
+    format: async (req, file) => 'webp', // WebP formatına dönüştür
+    public_id: (req, file) => `taylanhomes-${Date.now()}-${file.originalname.split('.')[0]}`
+  },
 });
 const upload = multer({ storage: storage });
 
 // Orta katman (Middleware)
 const corsOptions = {
-  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'http://localhost:3000'],
-  optionsSuccessStatus: 200
+  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'http://localhost:3000'],
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-console.log(`'uploads' klasörü şu adresten sunuluyor: ${path.join(__dirname, 'uploads')}`);
+// Bu satır artık gerekli değil çünkü resimler yerel olarak sunulmayacak
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const authenticateToken = async (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  if (token == null) return res.sendStatus(401);
+  if (token == null) return res.sendStatus(401);
 
-  try {
-    const decodedToken = await auth.verifyIdToken(token);
-    req.user = decodedToken;
-    next();
-  } catch (error) {
-    console.error('Token doğrulama hatası:', error);
-    return res.sendStatus(403);
-  }
+  try {
+    const decodedToken = await auth.verifyIdToken(token);
+    req.user = decodedToken;
+    next();
+  } catch (error) {
+    console.error('Token doğrulama hatası:', error);
+    return res.sendStatus(403);
+  }
 };
 
-// KRİTİK DEĞİŞİKLİK: İlanları getirme (hem tümü hem de öne çıkanlar için)
+// --- API ENDPOINT'LERİ ---
+
+// İlanları getirme (hem tümü hem de öne çıkanlar için)
 app.get('/api/properties', async (req, res) => {
-  try {
-    const isFeaturedQuery = req.query.isFeatured;
-    let propertiesRef = db.collection('properties');
+  try {
+    const isFeaturedQuery = req.query.isFeatured;
+    let propertiesRef = db.collection('properties');
 
-    if (isFeaturedQuery === 'true') {
-      // Eğer isFeatured=true parametresi varsa, sadece öne çıkan ilanları filtrele
-      propertiesRef = propertiesRef.where('isFeatured', '==', true);
-    }
+    if (isFeaturedQuery === 'true') {
+      propertiesRef = propertiesRef.where('isFeatured', '==', true);
+    }
 
-    const snapshot = await propertiesRef.get();
-    const properties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.status(200).json(properties);
-  } catch (error) {
-    console.error('İlanlar getirilirken hata oluştu:', error);
-    res.status(500).json({ message: 'Sunucu hatası, ilanlar getirilemedi.' });
-  }
+    const snapshot = await propertiesRef.get();
+    const properties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error('İlanlar getirilirken hata oluştu:', error);
+    res.status(500).json({ message: 'Sunucu hatası, ilanlar getirilemedi.' });
+  }
 });
 
-
-// Tek bir ilanı getirme (PropertyDetailPage için - Zaten herkese açık)
+// Tek bir ilanı getirme
 app.get('/api/properties/:id', async (req, res) => {
-  try {
-    const propertyId = req.params.id;
-    const docRef = db.collection('properties').doc(propertyId);
-    const docSnap = await docRef.get();
+  try {
+    const propertyId = req.params.id;
+    const docRef = db.collection('properties').doc(propertyId);
+    const docSnap = await docRef.get();
 
-    if (!docSnap.exists) {
-      return res.status(404).json({ message: 'İlan bulunamadı.' });
-    }
+    if (!docSnap.exists) {
+      return res.status(404).json({ message: 'İlan bulunamadı.' });
+    }
 
-    res.status(200).json({ id: docSnap.id, ...docSnap.data() });
-  } catch (error) {
-    console.error('Tek ilan getirilirken hata oluştu:', error);
-    res.status(500).json({ message: 'Sunucu hatası, ilan getirilemedi.' });
-  }
+    res.status(200).json({ id: docSnap.id, ...docSnap.data() });
+  } catch (error) {
+    console.error('Tek ilan getirilirken hata oluştu:', error);
+    res.status(500).json({ message: 'Sunucu hatası, ilan getirilemedi.' });
+  }
 });
 
-
-// İlan ekleme (dosya yüklemeli - Kimlik doğrulama gerektirir)
+// İlan ekleme (Cloudinary'ye yüklemeli)
 app.post('/api/properties/with-files', authenticateToken, upload.fields([
-  { name: 'mainImage', maxCount: 1 },
-  { name: 'galleryImages', maxCount: 10 },
-  { name: 'data', maxCount: 1 }
+  { name: 'mainImage', maxCount: 1 },
+  { name: 'galleryImages', maxCount: 10 },
+  { name: 'data', maxCount: 1 }
 ]), async (req, res) => {
-  try {
-    const data = JSON.parse(req.body.data);
-    const mainImageFile = req.files['mainImage'] ? req.files['mainImage'][0] : null;
-    const galleryImageFiles = req.files['galleryImages'] || [];
+  try {
+    const data = JSON.parse(req.body.data);
+    const mainImageFile = req.files['mainImage'] ? req.files['mainImage'][0] : null;
+    const galleryImageFiles = req.files['galleryImages'] || [];
+    
+    // Cloudinary'den dönen URL'leri al
+    let imageUrl = mainImageFile ? mainImageFile.path : '';
+    const galleryImages = galleryImageFiles.map(file => file.path);
 
-    let imageUrl = '';
-    if (mainImageFile) {
-      imageUrl = `/uploads/${mainImageFile.filename}`;
-    }
+    const newProperty = {
+      ...data,
+      imageUrl: imageUrl,
+      galleryImages: galleryImages,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
 
-    const galleryImages = galleryImageFiles.map(file => `/uploads/${file.filename}`);
-
-    const newProperty = {
-      ...data,
-      imageUrl: imageUrl,
-      galleryImages: galleryImages,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    };
-
-    const docRef = await db.collection('properties').add(newProperty);
-    res.status(201).json({ id: docRef.id, ...newProperty, message: 'İlan başarıyla eklendi.' });
-  } catch (error) {
-    console.error('İlan eklenirken hata oluştu (Dosya Yüklemeli):', error);
-    if (error.message.includes('Cannot use "undefined" as a Firestore value')) {
-      res.status(400).json({ message: 'Geçersiz veri: Bazı alanlar boş veya hatalı tanımlanmış olabilir. Lütfen tüm alanları kontrol edin.' });
-    } else {
-      res.status(500).json({ message: 'Sunucu hatası, ilan eklenemedi.' });
-    }
-  }
+    const docRef = await db.collection('properties').add(newProperty);
+    res.status(201).json({ id: docRef.id, ...newProperty, message: 'İlan başarıyla eklendi.' });
+  } catch (error) {
+    console.error('İlan eklenirken hata oluştu:', error);
+    res.status(500).json({ message: 'Sunucu hatası, ilan eklenemedi.' });
+  }
 });
 
-// İlan güncelleme (dosya yüklemeli - Kimlik doğrulama gerektirir)
+// İlan güncelleme (Cloudinary'ye yüklemeli)
 app.put('/api/properties/:id/with-files', authenticateToken, upload.fields([
-  { name: 'mainImage', maxCount: 1 },
-  { name: 'galleryImages', maxCount: 10 },
-  { name: 'data', maxCount: 1 }
+  { name: 'mainImage', maxCount: 1 },
+  { name: 'galleryImages', maxCount: 10 },
+  { name: 'data', maxCount: 1 }
 ]), async (req, res) => {
-  try {
-    const propertyId = req.params.id;
-    const data = JSON.parse(req.body.data);
-    const mainImageFile = req.files['mainImage'] ? req.files['mainImage'][0] : null;
-    const galleryImageFiles = req.files['galleryImages'] || [];
+  try {
+    const propertyId = req.params.id;
+    const data = JSON.parse(req.body.data);
+    const mainImageFile = req.files['mainImage'] ? req.files['mainImage'][0] : null;
+    const galleryImageFiles = req.files['galleryImages'] || [];
 
-    const docRef = db.collection('properties').doc(propertyId);
-    const docSnap = await docRef.get();
+    const docRef = db.collection('properties').doc(propertyId);
+    const docSnap = await docRef.get();
 
-    if (!docSnap.exists) {
-      return res.status(404).json({ message: 'İlan bulunamadı.' });
-    }
+    if (!docSnap.exists) {
+      return res.status(404).json({ message: 'İlan bulunamadı.' });
+    }
 
-    const oldPropertyData = docSnap.data();
-    let updatedImageUrl = oldPropertyData.imageUrl;
-    let updatedGalleryImages = oldPropertyData.galleryImages || [];
+    const oldPropertyData = docSnap.data();
+    let updatedImageUrl = oldPropertyData.imageUrl;
+    let updatedGalleryImages = oldPropertyData.galleryImages || [];
 
-    if (mainImageFile) {
-      if (oldPropertyData.imageUrl && oldPropertyData.imageUrl.startsWith('/uploads/')) {
-        const oldMainImagePath = path.join(__dirname, oldPropertyData.imageUrl);
-        fs.unlink(oldMainImagePath, (err) => {
-          if (err) console.error(`Eski ana görsel silinirken hata oluştu: ${oldMainImagePath}`, err);
-        });
-      }
-      updatedImageUrl = `/uploads/${mainImageFile.filename}`;
-    }
+    // Yeni bir ana resim yüklendiyse, eskisini Cloudinary'den sil
+    if (mainImageFile) {
+      if (oldPropertyData.imageUrl && oldPropertyData.imageUrl.includes('cloudinary')) {
+        const publicId = oldPropertyData.imageUrl.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(`taylanhomes/${publicId}`);
+      }
+      updatedImageUrl = mainImageFile.path;
+    }
 
-    const existingGalleryImagesFromFrontend = data.existingGalleryImages || [];
-    const newGalleryImagePaths = galleryImageFiles.map(file => `/uploads/${file.filename}`);
+    // Yeni resimler Cloudinary'den gelen URL'lerdir
+    const newGalleryImagePaths = galleryImageFiles.map(file => file.path);
+    const existingGalleryImagesFromFrontend = data.existingGalleryImages || [];
 
-    updatedGalleryImages = existingGalleryImagesFromFrontend.filter(img => img.startsWith('/uploads/'))
-      .concat(newGalleryImagePaths);
+    updatedGalleryImages = existingGalleryImagesFromFrontend.concat(newGalleryImagePaths);
 
-    const updatedProperty = {
-      ...data,
-      imageUrl: updatedImageUrl,
-      galleryImages: updatedGalleryImages,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    };
+    const updatedProperty = {
+      ...data,
+      imageUrl: updatedImageUrl,
+      galleryImages: updatedGalleryImages,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
 
-    delete updatedProperty.existingGalleryImages;
+    delete updatedProperty.existingGalleryImages;
 
-    await docRef.update(updatedProperty);
-    res.status(200).json({ id: propertyId, ...updatedProperty, message: 'İlan başarıyla güncellendi.' });
-
-  } catch (error) {
-    console.error('Error updating property (with files):', error);
-    res.status(500).json({ message: 'Sunucu hatası, ilan güncellenemedi.' });
-  }
+    await docRef.update(updatedProperty);
+    res.status(200).json({ id: propertyId, ...updatedProperty, message: 'İlan başarıyla güncellendi.' });
+  } catch (error) {
+    console.error('Error updating property:', error);
+    res.status(500).json({ message: 'Sunucu hatası, ilan güncellenemedi.' });
+  }
 });
 
-// İlan silme (Kimlik doğrulama gerektirir)
+// İlan silme (Cloudinary'deki resimleri de siler)
 app.delete('/api/properties/:id', authenticateToken, async (req, res) => {
-  try {
-    const propertyId = req.params.id;
-    const docRef = db.collection('properties').doc(propertyId);
-    const docSnap = await docRef.get();
+  try {
+    const propertyId = req.params.id;
+    const docRef = db.collection('properties').doc(propertyId);
+    const docSnap = await docRef.get();
 
-    if (!docSnap.exists) {
-      return res.status(404).json({ message: 'İlan bulunamadı.' });
-    }
+    if (!docSnap.exists) {
+      return res.status(404).json({ message: 'İlan bulunamadı.' });
+    }
 
-    const propertyData = docSnap.data();
+    const propertyData = docSnap.data();
 
-    const deleteImage = (imagePath) => {
-      if (imagePath && imagePath.startsWith('/uploads/')) {
-        const fullPath = path.join(__dirname, imagePath);
-        fs.unlink(fullPath, (err) => {
-          if (err) console.error(`Görsel silinirken hata oluştu: ${fullPath}`, err);
-          else console.log(`Görsel silindi: ${fullPath}`);
-        });
-      }
-    };
+    const deleteImageFromCloudinary = async (imageUrl) => {
+      if (imageUrl && imageUrl.includes('cloudinary')) {
+        const publicId = imageUrl.split('/').pop().split('.')[0];
+        console.log(`Cloudinary'den siliniyor: taylanhomes/${publicId}`);
+        await cloudinary.uploader.destroy(`taylanhomes/${publicId}`);
+      }
+    };
 
-    deleteImage(propertyData.imageUrl);
-    if (propertyData.galleryImages && Array.isArray(propertyData.galleryImages)) {
-      propertyData.galleryImages.forEach(deleteImage);
-    }
+    await deleteImageFromCloudinary(propertyData.imageUrl);
+    if (propertyData.galleryImages && Array.isArray(propertyData.galleryImages)) {
+      await Promise.all(propertyData.galleryImages.map(deleteImageFromCloudinary));
+    }
 
-    await docRef.delete();
-    res.status(200).json({ message: 'İlan başarıyla silindi.' });
-  } catch (error) {
-    console.error('İlan silinirken hata oluştu:', error);
-    res.status(500).json({ message: 'Sunucu hatası, ilan silinemedi.' });
-  }
+    await docRef.delete();
+    res.status(200).json({ message: 'İlan başarıyla silindi.' });
+  } catch (error) {
+    console.error('İlan silinirken hata oluştu:', error);
+    res.status(500).json({ message: 'Sunucu hatası, ilan silinemedi.' });
+  }
 });
 
 // Sunucuyu başlat
 app.listen(PORT, () => {
-  console.log(`Sunucu http://localhost:${PORT} adresinde çalışıyor`);
+  console.log(`Sunucu http://localhost:${PORT} adresinde çalışıyor`);
 });
