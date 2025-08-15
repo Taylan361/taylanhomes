@@ -39,7 +39,7 @@ const auth = getAuth(app);
 
 // Backend URL'nizi buraya ekleyin
 // Eski kod (muhtemelen bu şekildeydi)
-// const API_BASE_URL = 'http://localhost:5000';
+
 
 // Yeni kod
 const API_BASE_URL = 'https://taylanhomes.onrender.com';
