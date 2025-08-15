@@ -63,7 +63,8 @@ const upload = multer({ storage: storage });
 
 // Orta katman (Middleware)
 const corsOptions = {
-  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'http://localhost:3000'],
+  // Burası güncellendi
+  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'https://taylanhomes.onrender.com'],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
