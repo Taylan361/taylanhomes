@@ -4,6 +4,7 @@ const cors = require('cors');
 const admin = require('firebase-admin');
 const multer = require('multer');
 const dotenv = require('dotenv');
+const path = require('path'); // "path" modülü, kodunuzda kullanılmadığı için gereksizdir ancak var olmasında bir sakınca yoktur.
 
 // Cloudinary paketlerini içe aktar
 const cloudinary = require('cloudinary').v2;
@@ -64,7 +65,7 @@ const upload = multer({ storage: storage });
 // Orta katman (Middleware)
 const corsOptions = {
   // Burası güncellendi
-  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'https://taylanhomes.onrender.com'],
+  origin: ['https://taylanhomes.com', 'https://www.taylanhomes.com', 'https://taylanhomes.onrender.com', 'http://localhost:3000'],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
